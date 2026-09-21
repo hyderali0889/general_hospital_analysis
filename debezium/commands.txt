@@ -1,0 +1,8 @@
+# Check if connector is running
+curl http://localhost:8083/connectors/hospital-postgres-connector/status | jq
+
+# List all connectors
+curl http://localhost:8083/connectors | jq
+
+# List Kafka topics (after some changes happen)
+docker exec -it hospital_kafka kafka-topics.sh --bootstrap-server localhost:9092 --list
