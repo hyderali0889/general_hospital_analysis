@@ -157,9 +157,3 @@ Data Analyst | Healthcare Analytics Enthusiast
 This project is for educational and portfolio purposes.  
 Dataset is synthetic and licensed under CC0: Public Domain.
 ```
-
----
-
-Would you like me to also create:
-1. A shorter version of the README, or  
-2. A `docs/Business_Questions.md` + Data Dictionary template?
