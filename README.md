@@ -104,7 +104,7 @@ hospital-beds-management/
 
 ### 1. Clone the repository
 
-git clone https://github.com/yourusername/hospital-beds-management.git
+git clone 
 cd hospital-beds-management
 
 
