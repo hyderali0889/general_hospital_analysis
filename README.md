@@ -85,33 +85,33 @@ The dataset contains **4 related tables**:
 
 ## 📁 Project Structure
 
-
-- hospital-beds-management/
-- ├── data/                       # Raw CSV files
-- ├── sql/                        # SQL scripts (staging, cleaning, modeling)
-- ├── notebooks/                  # Python EDA & analysis notebooks
-- ├── dashboards/
-  - ├── powerbi/                    # Power BI .pbix file
-- ├── project_apps/               # docker-compose.yml + related files
-- ├── streamlit/                  # Optional Streamlit app
-- ├── reports/                    # Executive summary + full PDF report
-- ├── docs/                       # Data dictionary, ERD, business questions
-- └── README.md
-
+```bash
+hospital-beds-management/
+├── data/                       # Raw CSV files
+├── sql/                        # SQL scripts (staging, cleaning, modeling)
+├── notebooks/                  # Python EDA & analysis notebooks
+├── dashboards/
+  ├── powerbi/                    # Power BI .pbix file
+├── project_apps/               # docker-compose.yml + related files
+├── streamlit/                  # Optional Streamlit app
+├── reports/                    # Executive summary + full PDF report
+├── docs/                       # Data dictionary, ERD, business questions
+└── README.md
+```
 ---
 
 ## 🚀 How to Run the Project
 
 ### 1. Clone the repository
-
-- git clone 
-- cd hospital-beds-management
-
+```bash
+git clone 
+cd hospital-beds-management
+```
 
 ### 2. Start the infrastructure (PostgreSQL + Kafka + Debezium)
-
+```bash
 docker compose up -d
-
+```
 ### 3. Load the data
 Run the SQL scripts in the `sql/` folder to create staging tables and the analytical model.
 
@@ -156,4 +156,3 @@ Data Analyst | Healthcare Analytics Enthusiast
 
 This project is for educational and portfolio purposes.  
 Dataset is synthetic and licensed under CC0: Public Domain.
-```
