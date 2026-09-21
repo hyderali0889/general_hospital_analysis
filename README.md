@@ -91,8 +91,8 @@ The dataset contains **4 related tables**:
 - ├── sql/                        # SQL scripts (staging, cleaning, modeling)
 - ├── notebooks/                  # Python EDA & analysis notebooks
 - ├── dashboards/
-- │   ├── powerbi/                # Power BI .pbix file
-- ├── project_apps/                     # docker-compose.yml + related files
+  - ├── powerbi/                    # Power BI .pbix file
+- ├── project_apps/               # docker-compose.yml + related files
 - ├── streamlit/                  # Optional Streamlit app
 - ├── reports/                    # Executive summary + full PDF report
 - ├── docs/                       # Data dictionary, ERD, business questions
