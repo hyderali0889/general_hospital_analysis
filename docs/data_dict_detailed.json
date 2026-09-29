@@ -1,0 +1,296 @@
+{
+  "patients.csv": {
+    "row_count": 1000,
+    "column_count": 7,
+    "fields": {
+      "patient_id": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": [
+          "PAT-09484753",
+          "PAT-f0644084",
+          "PAT-ac6162e4",
+          "PAT-3dda2bb5",
+          "PAT-08591375"
+        ],
+        "description": ""
+      },
+      "name": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": [
+          "Richard Rodriguez",
+          "Shannon Walker",
+          "Julia Torres",
+          "Crystal Johnson",
+          "Garrett Lin"
+        ],
+        "description": ""
+      },
+      "age": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["24", "6", "32", "25", "83"],
+        "description": ""
+      },
+      "arrival_date": {
+        "type": "date",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": [
+          "2025-03-16",
+          "2025-12-13",
+          "2025-06-29",
+          "2025-10-12",
+          "2025-02-18"
+        ],
+        "description": ""
+      },
+      "departure_date": {
+        "type": "date",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": [
+          "2025-03-22",
+          "2025-12-14",
+          "2025-07-05",
+          "2025-10-23",
+          "2025-02-25"
+        ],
+        "description": ""
+      },
+      "service": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["surgery", "general_medicine", "emergency", "ICU"],
+        "description": ""
+      },
+      "satisfaction": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["61", "83", "81", "76", "66"],
+        "description": ""
+      }
+    }
+  },
+  "services_weekly.csv": {
+    "row_count": 208,
+    "column_count": 10,
+    "fields": {
+      "week": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["1", "2", "3", "4", "5"],
+        "description": ""
+      },
+      "month": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["1", "2", "3", "4", "5"],
+        "description": ""
+      },
+      "service": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["emergency", "surgery", "general_medicine", "ICU"],
+        "description": ""
+      },
+      "available_beds": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["32", "45", "37", "22", "28"],
+        "description": ""
+      },
+      "patients_request": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["76", "130", "201", "31", "169"],
+        "description": ""
+      },
+      "patients_admitted": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["32", "45", "37", "22", "28"],
+        "description": ""
+      },
+      "patients_refused": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["44", "85", "164", "9", "141"],
+        "description": ""
+      },
+      "patient_satisfaction": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["67", "83", "97", "84", "75"],
+        "description": ""
+      },
+      "staff_morale": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["70", "78", "43", "91", "64"],
+        "description": ""
+      },
+      "event": {
+        "type": "string",
+        "nullable": true,
+        "null_count": 164,
+        "sample_values": ["flu", "donation", "strike"],
+        "description": ""
+      }
+    }
+  },
+  "staff.csv": {
+    "row_count": 126,
+    "column_count": 4,
+    "fields": {
+      "staff_id": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": [
+          "STF-1881ede3",
+          "STF-39082289",
+          "STF-3c9039fc",
+          "STF-5ca26577",
+          "STF-48fc5275"
+        ],
+        "description": ""
+      },
+      "staff_name": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": [
+          "Aaron Wise",
+          "Abigail Shaffer",
+          "Aimee Montoya",
+          "Allison Hill",
+          "Amber Kidd"
+        ],
+        "description": ""
+      },
+      "role": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["nurse", "doctor", "nursing_assistant"],
+        "description": ""
+      },
+      "service": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["ICU", "emergency", "general_medicine", "surgery"],
+        "description": ""
+      }
+    }
+  },
+  "staff_schedule.csv": {
+    "row_count": 6552,
+    "column_count": 6,
+    "fields": {
+      "week": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["1", "2", "3", "4", "5"],
+        "description": ""
+      },
+      "staff_id": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": [
+          "STF-5ca26577",
+          "STF-02ae59ca",
+          "STF-d8006e7c",
+          "STF-212d8b31",
+          "STF-107a58e4"
+        ],
+        "description": ""
+      },
+      "staff_name": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": [
+          "Allison Hill",
+          "Noah Rhodes",
+          "Angie Henderson",
+          "Daniel Wagner",
+          "Cristian Santos"
+        ],
+        "description": ""
+      },
+      "role": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["doctor", "nurse", "nursing_assistant"],
+        "description": ""
+      },
+      "service": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["emergency", "surgery", "general_medicine", "ICU"],
+        "description": ""
+      },
+      "present": {
+        "type": "boolean",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["1", "0"],
+        "description": ""
+      }
+    }
+  },
+  "staff_schedule_cleaned.csv": {
+    "row_count": 6552,
+    "column_count": 3,
+    "fields": {
+      "week": {
+        "type": "integer",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["1", "2", "3", "4", "5"],
+        "description": ""
+      },
+      "staff_id": {
+        "type": "string",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": [
+          "STF-5ca26577",
+          "STF-02ae59ca",
+          "STF-d8006e7c",
+          "STF-212d8b31",
+          "STF-107a58e4"
+        ],
+        "description": ""
+      },
+      "present": {
+        "type": "boolean",
+        "nullable": false,
+        "null_count": 0,
+        "sample_values": ["1", "0"],
+        "description": ""
+      }
+    }
+  }
+}

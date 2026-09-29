@@ -1,0 +1,53 @@
+{
+  "patients.csv": {
+    "rows": 1000,
+    "columns": {
+      "patient_id": "string",
+      "name": "string",
+      "age": "integer",
+      "arrival_date": "date",
+      "departure_date": "date",
+      "service": "string",
+      "satisfaction": "integer"
+    }
+  },
+  "services_weekly.csv": {
+    "rows": 208,
+    "columns": {
+      "week": "integer",
+      "month": "integer",
+      "service": "string",
+      "available_beds": "integer",
+      "patients_request": "integer",
+      "patients_admitted": "integer",
+      "patients_refused": "integer",
+      "patient_satisfaction": "integer",
+      "staff_morale": "integer",
+      "event": "string (164 nulls)"
+    }
+  },
+  "staff.csv": {
+    "rows": 126,
+    "columns": {
+      "staff_id": "string",
+      "staff_name": "string",
+      "role": "string",
+      "service": "string"
+    }
+  },
+  "staff_schedule.csv": {
+    "rows": 6552,
+    "columns": {
+      "week": "integer",
+      "staff_id": "string",
+      "staff_name": "string",
+      "role": "string",
+      "service": "string",
+      "present": "boolean"
+    }
+  },
+  "staff_schedule_cleaned.csv": {
+    "rows": 6552,
+    "columns": { "week": "integer", "staff_id": "string", "present": "boolean" }
+  }
+}

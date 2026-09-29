@@ -13,9 +13,9 @@
 ### Day 1–2: Project Setup + Data Understanding
 **Goal**: Initial Data Collection.
 
-- Download and explore all 4 CSVs.
-- Create a clear data dictionary and ERD (Entity Relationship Diagram).
-- Load data into PostgreSQL (create staging schema).
+- Download and explore all 4 CSVs.          Done
+- Create a clear data dictionary and ERD (Entity Relationship Diagram).     Done
+- Load data into PostgreSQL (create staging schema).      Done
 - Document business context:  
   “A medium-sized hospital wants to optimize bed utilization, reduce patient refusals, improve staff morale, and increase patient satisfaction.”
 
@@ -27,10 +27,10 @@
 ### Day 3–4: Data Cleaning + Modeling
 **Goal**: Build a clean analytical data model.
 
-- Clean missing values, date formats, inconsistencies.
-- Create a proper star schema:
-  - Fact tables: admissions, weekly performance, staff presence
-  - Dimensions: staff, patients, services, date, events
+- Clean missing values, date formats, inconsistencies.      Done
+- Create a proper star schema:                              Done
+  - Fact tables: admissions, weekly performance, staff presence         
+  - Dimensions: staff, patients, services, weekly_schedule    Done
 - Calculate key metrics early:
   - Bed utilization rate
   - Refusal rate
