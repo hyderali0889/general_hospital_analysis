@@ -1,0 +1,7 @@
+-- CREATE TABLE Staff_presence( 
+--     staff_presence_id BIGSERIAL PRIMARY KEY,
+--     staff_name VARCHAR(50),
+--     present NUMERIC(5),
+--     staff_id VARCHAR(50) CONSTRAINT fk_staff_id
+--         REFERENCES staff(staff_id)
+-- )

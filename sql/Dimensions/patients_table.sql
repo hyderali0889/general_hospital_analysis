@@ -1,0 +1,9 @@
+-- Create Table patients ( 
+--     patient_id text not null primary key,
+--     name text,
+--     age numeric(5),
+--     arrival_date date,
+--     departure_date date,
+--     service text,
+--     satisfaction numeric(10)
+-- )

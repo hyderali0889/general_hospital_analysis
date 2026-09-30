@@ -29,14 +29,10 @@
 
 - Clean missing values, date formats, inconsistencies.      Done
 - Create a proper star schema:                              Done
-  - Fact tables: admissions, weekly performance, staff presence         
+  - Fact tables: admissions, weekly performance, staff presence      Done   
   - Dimensions: staff, patients, services, weekly_schedule    Done
-- Calculate key metrics early:
-  - Bed utilization rate
-  - Refusal rate
-  - Average Length of Stay (LOS)
-  - Staffing levels vs demand
-  - Satisfaction & morale trends
+  - Answer Business Questions (part 1 & 2)    
+
 
 **Deliverables**:
 - Cleaned tables in PostgreSQL
@@ -52,8 +48,10 @@ Focus on high-value hospital operations questions:
 - Impact of special events (flu season, etc.)
 - Length of Stay analysis by service and age group
 - Staff workload and presence patterns
+- Answer Business Questions (part 3 & 4) 
 
-Use both SQL and Python. Create publication-quality visualizations (Plotly preferred for interactivity).
+
+Using both SQL and Python. Created publication-quality visualizations.
 
 **Deliverables**:
 - Comprehensive EDA notebook
@@ -67,6 +65,8 @@ Make the project stand out:
 - Simple predictive model (e.g. predict high refusal risk weeks or staffing needs)
 - Optional: Clustering of services or staff performance
 - Scenario analysis (“What if we increase beds in ICU by 10%?”)
+- Answer Business Questions (part 5 & 6) 
+
 
 ### Day 10–11: Professional Dashboards (Most Important for Portfolio)
 Build **two dashboards**:
@@ -77,6 +77,8 @@ Build **two dashboards**:
    - Staffing vs demand
    - Patient satisfaction & morale
    - Filters by service, week, event
+   - Answer Business Questions (Decision-Oriented Questions) 
+  
 
 Make the dashboards clean, interactive, and decision-oriented.
 
@@ -88,7 +90,7 @@ Make the dashboards clean, interactive, and decision-oriented.
 ### Day 12: Real-World Tools
 - Simulate real-time data flow with **Kafka** (produce admission events and consume them into a dashboard)
 - build a simple **Streamlit** app for interactive exploration
-- Containerize the project with Docker (shows DevOps awareness)     Done
+- Containerize the project with Docker      Done
 
 Even basic implementation of one of these is impressive.
 

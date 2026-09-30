@@ -1,0 +1,14 @@
+-- Create Table weekly_services ( 
+--     week numeric(5),
+--     month numeric(5),
+--     service text,
+--     available_beds numeric(5),
+--     patients_request numeric(5),
+--     patients_admitted numeric(5),
+--     patients_refused numeric(5), 
+--     patient_satisfaction numeric(5),
+--     staff_morale numeric(5),
+--     event text,
+
+--     PRIMARY KEY(week, service)
+-- )

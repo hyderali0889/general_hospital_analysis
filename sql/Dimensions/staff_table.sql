@@ -1,0 +1,6 @@
+-- Create Table staff( 
+--     staff_id text not null primary key,
+--     staff_name text    ,
+--     role text,
+--     service text
+-- )

@@ -1,0 +1,8 @@
+-- CREATE TABLE weekly_performance( 
+-- id BIGSERIAL PRIMARY KEY,
+--  week Numeric(2),
+--  available_beds Numeric(5),
+--  patients_request  Numeric(5),
+--  patients_admitted Numeric(5),
+--  patients_refused  Numeric(5)
+-- )
