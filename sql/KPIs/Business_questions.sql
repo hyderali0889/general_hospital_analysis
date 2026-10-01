@@ -76,21 +76,42 @@
     -- 2. Patient refusals
 
         -- 9. What is the overall refusal rate, and how does it vary by service, week, month, and event?
-
+                -- select SUM(patients_request) as all_patients, SUM(patients_refused) as all_refused,
+                -- CONCAT(ROUND(( (SUM(patients_refused) /SUM(patients_request)) ) *100) , ' %' )as refusal_rate , service,week,month,event
+                --  from weekly_services group by service,week,month,event order by refusal_rate desc;
 
         -- 10. Are refusals driven primarily by insufficient beds, unusually high demand, or staffing constraints?
+                -- select patients_request,SUM(patients_refused) as all_refused,available_beds from weekly_services where patients_refused > 0 group by available_beds,patients_request  order by available_beds desc;
 
+                --  select patients_request,SUM(patients_refused) as all_refused,available_beds from weekly_services where patients_refused > 0 and (patients_request - patients_refused) > available_beds group by available_beds,patients_request  order by available_beds desc;
+
+                -- Refusals are almost always driven by insufficient beds , none of the refusals were given when there were available beds and the patients_request was less than the available_beds
 
         -- 11. Do flu, strike, donation, or no-event weeks have materially different refusal rates?
-
-
+                --     select SUM(patients_request) as all_patients, SUM(patients_refused) as all_refused,
+                -- CONCAT(ROUND(( (SUM(patients_refused) /SUM(patients_request)) ) *100) , ' %' )as refusal_rate , event
+               --  from weekly_services group by event order by refusal_rate desc;
+                -- yes customers with FLU are refused the most with 78% refusal rate followed by donation with 53% and no event with 50% and strike with 48% refusal rate
         -- 12. Which services have the largest number of refusals even when their refusal rate is not the highest?
-
+                -- select SUM(patients_request) as all_patients, SUM(patients_refused) as all_refused,CONCAT(ROUND(( (SUM(patients_refused) /SUM(patients_request)) ) *100) , ' %' )as refusal_rate,
+                --  service
+                -- -- from weekly_services group by service order by refusal_rate desc;
+                -- general medicine has the largest number of refusals even when their refusal rate is not the highest
 
         -- 13. Can high-refusal weeks be identified early enough to trigger additional staffing or capacity actions?
 
+            -- select SUM(patients_request) as all_patients, SUM(patients_refused) as all_refused,CONCAT(ROUND(( (SUM(patients_refused) /SUM(patients_request)) ) *100) , ' %' )as refusal_rate , week
+            -- from weekly_services  group by week HAVING (SUM(patients_refused) /SUM(patients_request)) > 0.65 order by week ;
+
+            -- after every 2 consecutive weeks the refusal rate goes above 65% so after every 2 weeks of normal operation the hospital should be able to identify the high refusal weeks and take immediate action to reduce refusals
 
         -- 14. What operational threshold should trigger escalation for a service with rising refusals?
+
+                --     select SUM(patients_request) as all_patients, SUM(patients_refused) as all_refused,
+                -- CONCAT(ROUND(( (SUM(patients_refused) /SUM(patients_request)) ) *100) , ' %' )as refusal_rate , service
+               --  from weekly_services group by service order by refusal_rate desc;
+
+                -- If a services has refusal rate of 80% or more for 2 consecutive weeks then it should trigger escalation for that service to take immediate action to reduce refusals
 
 
 

@@ -86,3 +86,5 @@ These questions convert the analysis into recommendations for management:
 - Average staff morale, by service and period
 - Demand-to-capacity ratio = patients requested / available beds
 
+
+

@@ -31,18 +31,18 @@
 - Create a proper star schema:                              Done
   - Fact tables: admissions, weekly performance, staff presence      Done   
   - Dimensions: staff, patients, services, weekly_schedule    Done
-  - Answer Business Questions (part 1 & 2)    
+  - Answer Business Questions (part 1 & 2)    DOne
 
 
 **Deliverables**:
-- Cleaned tables in PostgreSQL
-- SQL scripts for transformations
-- Data quality report
+- Cleaned tables in PostgreSQL      Done
+- SQL scripts for transformations   Done
+- Data quality report               Done 
 
 ### Day 5–7: Deep Exploratory Analysis (Core Insights)
 Focus on high-value hospital operations questions:
 
-- Bed utilization and capacity stress by service (ICU, General, etc.)
+- Bed utilization and capacity stress by service (ICU, General, etc.)           Done 
 - Patient refusal patterns and root causes
 - Relationship between staffing levels, morale, and patient satisfaction
 - Impact of special events (flu season, etc.)
