@@ -79,6 +79,27 @@ services:
       - hospital_network
 
   # ======================
+  # Metabase
+  # ======================
+  metabase:
+    image: metabase/metabase:latest
+    container_name: hospital_metabase
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: hospital_beds
+      MB_DB_HOST: postgres
+      MB_DB_PORT: 5432
+      MB_DB_USER: hospital
+      MB_DB_PASS: hospital123
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    networks:
+      - hospital_network
+
+  # ======================
   # pgAdmin
   # ======================
   pgadmin:
@@ -94,6 +115,7 @@ services:
     restart: unless-stopped
     networks:
       - hospital_network
+
 
 volumes:
   postgres_data:

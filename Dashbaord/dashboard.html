@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hospital Services Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #818cf8;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ===== Header ===== */
+    header {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .date-badge {
+      background: rgba(255,255,255,0.2);
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+    }
+
+    /* ===== Layout ===== */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.8rem;
+    }
+
+    /* ===== KPI Cards ===== */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .kpi-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.4rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    .kpi-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .kpi-value {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .kpi-change {
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+      font-weight: 500;
+    }
+
+    .positive { color: var(--success); }
+    .negative { color: var(--danger); }
+
+    /* ===== Charts Section ===== */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 1.4rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .chart-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.4rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+    }
+
+    .chart-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .chart-container {
+      position: relative;
+      height: 280px;
+    }
+
+    /* ===== Table Section ===== */
+    .table-card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 1.4rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .table-card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    th {
+      text-align: left;
+      padding: 0.85rem 1rem;
+      background: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #f8fafc;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-green { background: #d1fae5; color: #065f46; }
+    .badge-red   { background: #fee2e2; color: #991b1b; }
+    .badge-yellow{ background: #fef3c7; color: #92400e; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 900px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>🏥 Hospital Services Dashboard</h1>
+    <div class="header-actions">
+      <div class="date-badge" id="currentDate"></div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Total Patients</div>
+        <div class="kpi-value">1,248</div>
+        <div class="kpi-change positive">↑ 12% from last week</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Available Beds</div>
+        <div class="kpi-value">986</div>
+        <div class="kpi-change negative">↓ 4% from last week</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg Efficiency</div>
+        <div class="kpi-value">126%</div>
+        <div class="kpi-change positive">↑ 8% from last week</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Patients Without Beds</div>
+        <div class="kpi-value">142</div>
+        <div class="kpi-change negative">↑ 15% from last week</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Patients Request vs Available Beds</h3>
+        <div class="chart-container">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h3>Service Efficiency</h3>
+        <div class="chart-container">
+          <canvas id="doughnutChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <h3>Service Performance</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Patients Request</th>
+            <th>Available Beds</th>
+            <th>Shortage / Surplus</th>
+            <th>Efficiency</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="serviceTable">
+          <!-- Filled by JavaScript -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    // ===== Current Date =====
+    document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-GB', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    // ===== Sample Data (Replace with your real data) =====
+    const services = [
+      { name: "Cardiology",   request: 420, beds: 310 },
+      { name: "Orthopedics",  request: 380, beds: 350 },
+      { name: "Neurology",    request: 290, beds: 280 },
+      { name: "Pediatrics",   request: 210, beds: 260 },
+      { name: "Oncology",     request: 185, beds: 170 },
+      { name: "Emergency",    request: 510, beds: 400 }
+    ];
+
+    // ===== Fill Table =====
+    const tbody = document.getElementById('serviceTable');
+    services.forEach(s => {
+      const diff = s.request - s.beds;
+      const efficiency = ((s.request / s.beds) * 100).toFixed(1);
+      let statusClass = 'badge-green';
+      let statusText = 'Normal';
+
+      if (efficiency > 110) {
+        statusClass = 'badge-red';
+        statusText = 'Over Capacity';
+      } else if (efficiency > 95) {
+        statusClass = 'badge-yellow';
+        statusText = 'Near Full';
+      }
+
+      tbody.innerHTML += `
+        <tr>
+          <td><strong>${s.name}</strong></td>
+          <td>${s.request}</td>
+          <td>${s.beds}</td>
+          <td style="color:${diff > 0 ? '#ef4444' : '#10b981'}">
+            ${diff > 0 ? '+' : ''}${diff}
+          </td>
+          <td>${efficiency}%</td>
+          <td><span class="badge ${statusClass}">${statusText}</span></td>
+        </tr>
+      `;
+    });
+
+    // ===== Bar Chart =====
+    new Chart(document.getElementById('barChart'), {
+      type: 'bar',
+      data: {
+        labels: services.map(s => s.name),
+        datasets: [
+          {
+            label: 'Patients Request',
+            data: services.map(s => s.request),
+            backgroundColor: '#818cf8',
+            borderRadius: 6
+          },
+          {
+            label: 'Available Beds',
+            data: services.map(s => s.beds),
+            backgroundColor: '#34d399',
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top' }
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+    // ===== Doughnut Chart =====
+    new Chart(document.getElementById('doughnutChart'), {
+      type: 'doughnut',
+      data: {
+        labels: services.map(s => s.name),
+        datasets: [{
+          data: services.map(s => s.request),
+          backgroundColor: [
+            '#818cf8', '#34d399', '#f472b6',
+            '#fbbf24', '#60a5fa', '#f87171'
+          ],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right' }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

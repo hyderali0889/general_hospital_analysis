@@ -43,19 +43,18 @@
 Focus on high-value hospital operations questions:
 
 - Bed utilization and capacity stress by service (ICU, General, etc.)           Done 
-- Patient refusal patterns and root causes
-- Relationship between staffing levels, morale, and patient satisfaction
-- Impact of special events (flu season, etc.)
-- Length of Stay analysis by service and age group
-- Staff workload and presence patterns
-- Answer Business Questions (part 3 & 4) 
+- Patient refusal patterns and root causes    Inside Business Questions ( Q-28 , part-4)
+- Impact of special events (flu season, etc.)     Done
+- Length of Stay analysis by service and age group      Done
+- Staff workload and presence patterns        Inside Business Questions ( Q-29 , part-4)
+- Answer Business Questions (part 3 & 4)       Done
 
 
-Using both SQL and Python. Created publication-quality visualizations.
+Using both SQL and Python. Created publication-quality visualizations.      Visualization using Power BI and Metabase
 
 **Deliverables**:
-- Comprehensive EDA notebook
-- Key findings document with charts
+- Comprehensive EDA notebook                    Done
+- Key findings document with charts             Done
 
 ### Day 8–9: Advanced Analysis & Modeling
 Make the project stand out:

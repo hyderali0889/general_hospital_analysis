@@ -118,45 +118,104 @@
     -- 3. Patient experience and outcomes
 
         -- 15. Which services have the highest and lowest patient satisfaction?
+                -- select service, ROUND(AVG(patient_satisfaction) , 2) as avg_satisfaction from weekly_services group by service order by avg_satisfaction desc;
 
+                -- ICU has the highest patient satisfaction with 81.62% followed by General Medicine at 81.23%, Surgery at 79.27% and emergency at 77.88%
 
         -- 16. Does patient satisfaction change when a service is close to or above its bed capacity?
+                -- select service, ROUND(AVG(patient_satisfaction) , 2) as avg_satisfaction,available_beds from weekly_services where available_beds < 30 and patient_satisfaction > 50 group by service,available_beds order by avg_satisfaction desc;
 
+                -- No even when the available beds are less than 30 the Average patient satisfaction is still above 50% 
 
         -- 17. Is patient satisfaction associated with staff morale or staff attendance?
+                -- select service, ROUND(AVG(patient_satisfaction) , 2) as avg_satisfaction,staff_morale from weekly_services where staff_morale < 50 group by service,staff_morale order by avg_satisfaction,staff_morale desc;
 
+                -- No even when the staff morale is less than 50% the Average patient satisfaction is still above 80%
 
         -- 18. How does satisfaction vary by patient age group and service?
+            
 
+                -- Drop table if exists patient_services;
+             
+                -- select * from weekly_services limit 10;
+                -- Create table patient_services as select p.patient_id , p.name,p.age, (p.departure_date :: Date - p.arrival_date ::Date) as LOS ,week,month,w.service,available_beds,patient_satisfaction,staff_morale,event from weekly_services w Join patients p on w.patient_id = p.patient_id;
 
+                -- select * from weekly_services
+           
+
+                -- select p.patient_id , p.name,p.age, (p.departure_date :: Date - p.arrival_date ::Date) as LOS ,week,month,available_beds,patient_satisfaction,staff_morale,event,w.service  from weekly_services w Join patients p on w.patient_id = p.patient_id;
+
+                -- select * from patient_services limit 10;
+
+                -- select service, ROUND(AVG(patient_satisfaction) , 2) as avg_satisfaction,service from patient_services group by service
+               
+                -- ICU and General Medicine have the highest patient satisfaction with 81.62% and 81.23% respectively
+
+                --  select age, ROUND(AVG(patient_satisfaction), 2) as avg_satisfaction from patient_services group by age order by age desc;
+
+                --  age does not have a significant impact on patient satisfaction as the average patient satisfaction is above 80% for all age groups
+                
         -- 19. Do patients with longer stays report different satisfaction levels than patients with shorter stays?
+                -- select los, ROUND(AVG(patient_satisfaction), 2) as avg_satisfaction from patient_services group by los order by los desc;
 
+                -- not a significant impact on patient satisfaction as the average patient satisfaction is above 80% for all length of stay groups
 
         -- 20. Are there weeks where admissions remain high but patient satisfaction falls, indicating operational strain?
-
-
-        -- 21. Which service and patient segments should be prioritized for satisfaction improvement?
-
-
-
+                --   select p.patient_id ,week,available_beds,patient_satisfaction, w.patients_admitted  from weekly_services w Join patients p on w.patient_id = p.patient_id where patients_admitted >10 and patient_satisfaction < 90 order by patients_admitted desc;
+                
     -- 4. Length of stay and patient flow
 
         -- 22. What is the average and median length of stay by service?
+                -- select CONCAT(ROUND(AVG(los),2) , ' Days') as Avg_los, CONCAT( PERCENTILE_CONT(0.5) WITHIN GROUP (order by los) , ' Days') as median_los , service from patient_services group by service order by service desc;
 
+                -- the average and median length of stay is highest in ICU with 7.5 days and 7 days respectively followed by General Medicine with 6.5 days and 6 days respectively
+                
 
         -- 23. Which services have the longest stays, and how much variation exists within each service?
+                --   select MAX(los), service from patient_services group by service order by service desc;
 
+
+                -- No Variations in Length of Stay within each service
 
         -- 24. Does length of stay vary by patient age group or month of arrival?
+                -- select los,age from patient_services group by los,age order by los desc;
+
+                -- select los,month from patient_services group by los,month order by los desc;
+
+                -- Not a log of variation by age or by month
 
 
         -- 25. Are longer stays associated with lower bed availability or higher refusal rates in the same period?
+                --  select los,SUM(available_beds) from patient_services group by los order by los desc;
 
+
+                -- select p.patient_id ,p.los ,w.patients_refused from weekly_services w Join patient_services p on w.patient_id = p.patient_id order by los desc;
+                
+                -- select los,SUM(patient_refusal) from weekly_services group by los order by los desc;
+
+                -- select * from patient_services limit 10;
+               
 
         -- 26. Which services could release the most capacity through a reduction in average length of stay?
+                -- select p.patient_id ,p.los ,w.patients_refused,w.service from weekly_services w Join patient_services p on w.patient_id = p.patient_id order by los desc;
 
+
+                -- Emergency could release the most capacity through a reduction in average length of stay as it has the highest number of patients with the longest length of stay
 
         -- 27. Are there unusual or potentially invalid stays, such as departure dates before arrival dates or extremely long stays?
+                -- select p.patient_id ,p.los ,w.patients_refused,w.service from weekly_services w Join patient_services p on w.patient_id = p.patient_id where los< 0 order by los desc;
+
+               -- Nope, All stays are valid and Los stays between 0 and 14 days
+
+
+        -- 28. Patient refusal patterns and root causes
+                -- select * from weekly_services where patients_refused > 0 order by patients_refused desc;
+
+                -- Patients are usually refused due to insufficient beds 
+
+        -- 29. Staff workload and presence patterns
+
+                -- select * from staff_schedule order by present;
 
 
 

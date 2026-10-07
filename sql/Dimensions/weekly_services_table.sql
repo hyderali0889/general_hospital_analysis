@@ -9,6 +9,9 @@
 --     patient_satisfaction numeric(5),
 --     staff_morale numeric(5),
 --     event text,
-
+--     patient_id text CONSTRAINT fk_patient_id references patients(patient_id),
 --     PRIMARY KEY(week, service)
+
 -- )
+
+-- drop table if exists weekly_services;
