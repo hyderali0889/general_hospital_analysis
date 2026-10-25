@@ -1,4 +1,4 @@
--- Create Table staff_schedule( 
+-- Create Table staff_schedule(
 --     week numeric(5),
 --     staff_id text not null,
 --     present numeric(5),
@@ -6,11 +6,11 @@
 --     CONSTRAINT fk_staff
 --         FOREIGN KEY (staff_id)
 --         REFERENCES staff (staff_id)
-
+-- )
 
 --     /*
---     We can get these via Join with staff Table using 
---         SELECT 
+--     We can get these via Join with staff Table using
+--         SELECT
 --         ss.week,
 --         ss.staff_id,
 --         s.staff_name,
@@ -20,9 +20,9 @@
 --         FROM staff_schedule ss
 --         JOIN staff s ON ss.staff_id = s.staff_id;
 
---     staff_name text,                        
+--     staff_name text,
 --     role text ,
---     service text, 
+--     service text,
 
 --     */
 -- )
@@ -30,4 +30,4 @@
 
 -- Drop table staff_schedule;
 
--- TRUNCATE table staff;
+-- TRUNCATE table staff

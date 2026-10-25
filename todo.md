@@ -1,10 +1,10 @@
-**14-Day Roadmap**  
-**Project**: Hospital Beds Management  
+**14-Day Roadmap**
+**Project**: Hospital Beds Management
 
-### Tech Stack 
+### Tech Stack
 - **Database**: PostgreSQL
 - **Analysis**: Python (pandas, seaborn, plotly) + SQL
-- **BI Tools**: Power BI (main dashboard) 
+- **BI Tools**: Power BI (main dashboard)
 - **Optional Advanced**: Kafka (simulate real-time admissions), Docker, GitHub, Streamlit
 - **Documentation**: Notion / Markdown + GitHub README + PDF executive report
 
@@ -16,7 +16,7 @@
 - Download and explore all 4 CSVs.          Done
 - Create a clear data dictionary and ERD (Entity Relationship Diagram).     Done
 - Load data into PostgreSQL (create staging schema).      Done
-- Document business context:  
+- Document business context:
   “A medium-sized hospital wants to optimize bed utilization, reduce patient refusals, improve staff morale, and increase patient satisfaction.”
 
 **Deliverables**:
@@ -29,7 +29,7 @@
 
 - Clean missing values, date formats, inconsistencies.      Done
 - Create a proper star schema:                              Done
-  - Fact tables: admissions, weekly performance, staff presence      Done   
+  - Fact tables: admissions, weekly performance, staff presence      Done
   - Dimensions: staff, patients, services, weekly_schedule    Done
   - Answer Business Questions (part 1 & 2)    DOne
 
@@ -37,12 +37,12 @@
 **Deliverables**:
 - Cleaned tables in PostgreSQL      Done
 - SQL scripts for transformations   Done
-- Data quality report               Done 
+- Data quality report               Done
 
 ### Day 5–7: Deep Exploratory Analysis (Core Insights)
 Focus on high-value hospital operations questions:
 
-- Bed utilization and capacity stress by service (ICU, General, etc.)           Done 
+- Bed utilization and capacity stress by service (ICU, General, etc.)           Done
 - Patient refusal patterns and root causes    Inside Business Questions ( Q-28 , part-4)
 - Impact of special events (flu season, etc.)     Done
 - Length of Stay analysis by service and age group      Done
@@ -60,22 +60,22 @@ Using both SQL and Python. Created publication-quality visualizations.      Visu
 Make the project stand out:
 
 - Time series analysis of admissions and utilization    Done
-- Correlation / regression: What drives patient satisfaction and staff morale?      Done Buisness question no 27
-- Optional: Clustering of services or staff performance
-- Scenario analysis (“What if we increase beds in ICU by 10%?”)           Done Buisness question no 28
+- Correlation / regression: What drives patient satisfaction and staff morale?      Done Business question no 27
+- Optional: Clustering of services or staff performance         Done Business question no 34
+- Scenario analysis (“What if we increase beds in ICU by 10%?”)           Done Business question no 28
 - Answer Business Questions (part 5 & 6)      Done
 
 
 ### Day 10–11: Professional Dashboards (Most Important for Portfolio)
 
-1. **Power BI Dashboard** (primary)  
+1. **Power BI Dashboard** (primary)
    - Executive overview (KPIs)
    - Bed utilization & refusal deep-dive
    - Staffing vs demand
    - Patient satisfaction & morale
    - Filters by service, week, event
-   - Answer Business Questions (Decision-Oriented Questions) 
-  
+   - Answer Business Questions (Decision-Oriented Questions)
+
 
 Make the dashboards clean, interactive, and decision-oriented.
 

@@ -21,17 +21,17 @@
 
                 -- out of the 209 weeks 148 ocurrances had over flowing patients with no beds
 
-                
+
 
         -- 3. Which services experience the greatest gap between patient requests and patients admitted?
 
                 -- select week ,month, (patients_request - patients_admitted) as Patients_not_admitted , service from weekly_services order by Patients_not_admitted desc ;
 
-            -- emergency and general_medicine       
- 
+            -- emergency and general_medicine
+
         -- 4. Is bed capacity being used efficiently by service and week?
                 -- select SUM( patients_request - available_beds)  as patients_without_beds, service from weekly_services where (( patients_request - available_beds) > 0) group by service order by patients_without_beds   desc;
-                -- select SUM(available_beds) from weekly_services 
+                -- select SUM(available_beds) from weekly_services
 
                 -- select SUM(patients_request) as all_patients,
                 -- SUM(available_beds) as all_beds,
@@ -125,7 +125,7 @@
         -- 16. Does patient satisfaction change when a service is close to or above its bed capacity?
                 -- select service, ROUND(AVG(patient_satisfaction) , 2) as avg_satisfaction,available_beds from weekly_services where available_beds < 30 and patient_satisfaction > 50 group by service,available_beds order by avg_satisfaction desc;
 
-                -- No even when the available beds are less than 30 the Average patient satisfaction is still above 50% 
+                -- No even when the available beds are less than 30 the Average patient satisfaction is still above 50%
 
         -- 17. Is patient satisfaction associated with staff morale or staff attendance?
                 -- select service, ROUND(AVG(patient_satisfaction) , 2) as avg_satisfaction,staff_morale from weekly_services where staff_morale < 50 group by service,staff_morale order by avg_satisfaction,staff_morale desc;
@@ -133,28 +133,28 @@
                 -- No even when the staff morale is less than 50% the Average patient satisfaction is still above 80%
 
         -- 18. How does satisfaction vary by patient age group and service?
-            
+
 
                 -- Drop table if exists patient_services;
-             
+
                 -- select * from weekly_services limit 10;
                 -- Create table patient_services as select p.patient_id , p.name,p.age, (p.departure_date :: Date - p.arrival_date ::Date) as LOS ,week,month,w.service,available_beds,patient_satisfaction,staff_morale,event from weekly_services w Join patients p on w.patient_id = p.patient_id;
 
                 -- select * from weekly_services
-           
+
 
                 -- select p.patient_id , p.name,p.age, (p.departure_date :: Date - p.arrival_date ::Date) as LOS ,week,month,available_beds,patient_satisfaction,staff_morale,event,w.service  from weekly_services w Join patients p on w.patient_id = p.patient_id;
 
                 -- select * from patient_services limit 10;
 
                 -- select service, ROUND(AVG(patient_satisfaction) , 2) as avg_satisfaction,service from patient_services group by service
-               
+
                 -- ICU and General Medicine have the highest patient satisfaction with 81.62% and 81.23% respectively
 
                 --  select age, ROUND(AVG(patient_satisfaction), 2) as avg_satisfaction from patient_services group by age order by age desc;
 
                 --  age does not have a significant impact on patient satisfaction as the average patient satisfaction is above 80% for all age groups
-                
+
         -- 19. Do patients with longer stays report different satisfaction levels than patients with shorter stays?
                 -- select los, ROUND(AVG(patient_satisfaction), 2) as avg_satisfaction from patient_services group by los order by los desc;
 
@@ -162,14 +162,14 @@
 
         -- 20. Are there weeks where admissions remain high but patient satisfaction falls, indicating operational strain?
                 --   select p.patient_id ,week,available_beds,patient_satisfaction, w.patients_admitted  from weekly_services w Join patients p on w.patient_id = p.patient_id where patients_admitted >10 and patient_satisfaction < 90 order by patients_admitted desc;
-                
+
     -- 4. Length of stay and patient flow
 
         -- 22. What is the average and median length of stay by service?
                 -- select CONCAT(ROUND(AVG(los),2) , ' Days') as Avg_los, CONCAT( PERCENTILE_CONT(0.5) WITHIN GROUP (order by los) , ' Days') as median_los , service from patient_services group by service order by service desc;
 
                 -- the average and median length of stay is highest in ICU with 7.5 days and 7 days respectively followed by General Medicine with 6.5 days and 6 days respectively
-                
+
 
         -- 23. Which services have the longest stays, and how much variation exists within each service?
                 --   select MAX(los), service from patient_services group by service order by service desc;
@@ -190,11 +190,11 @@
 
 
                 -- select p.patient_id ,p.los ,w.patients_refused from weekly_services w Join patient_services p on w.patient_id = p.patient_id order by los desc;
-                
+
                 -- select los,SUM(patient_refusal) from weekly_services group by los order by los desc;
 
                 -- select * from patient_services limit 10;
-               
+
 
         -- 26. Which services could release the most capacity through a reduction in average length of stay?
                 -- select p.patient_id ,p.los ,w.patients_refused,w.service from weekly_services w Join patient_services p on w.patient_id = p.patient_id order by los desc;
@@ -211,7 +211,7 @@
         -- 28. Patient refusal patterns and root causes
                 -- select * from weekly_services where patients_refused > 0 order by patients_refused desc;
 
-                -- Patients are usually refused due to insufficient beds 
+                -- Patients are usually refused due to insufficient beds
 
         -- 29. Staff workload and presence patterns
 
@@ -242,7 +242,7 @@
 
                 -- select s.staff_id , t.staff_name,s.week,t.role,t.service from staff_schedule s join staff t on s.staff_id = t.staff_id;
 
-                
+
 
         -- 29. Which weeks show simultaneous high demand and low staff morale?
                 -- select * from weekly_services;
@@ -277,6 +277,44 @@
                 -- service from weekly_services order by patients_without_beds desc;
 
                 -- Increasing the beds by 10 % will reduce the patients refusal rates to almost 0% and will protect the hospital during future high-impact events
+        -- 34. Clustering of services or staff performance
+                        -- SELECT
+                        --         ss.week,
+                        --         ss.staff_id,
+                        --         s.staff_name,
+                        --         s.role,
+                        --         s.service,
+                        --         ss.present,
+                        --         Case
+                        --                 when ss.present < 50 then 'Low'
+                        --                 when ss.present >= 50 and ss.present < 80 then 'Medium'
+                        --                 when ss.present >=80 then 'High'
+                        --         end as staff_presence
+                        --         FROM staff_schedule ss
+                        --         JOIN staff s ON ss.staff_id = s.staff_id;
+                        --  select week,month,
+                        --  Case
+                        --         when patients_request < 50 then 'Low'
+                        --         when patients_request >= 50 and patients_request < 80 then 'Medium'
+                        --         when patients_request >=80 then 'High'
+                        -- end as patient_demand,
+                        -- Case
+                        --         when service='emergency' and patient_satisfaction < 80 then 'Emergency Low'
+                        --         when service='emergency' and patient_satisfaction >= 50 then 'Emergency Medium'
+                        --         when service='emergency' and patient_satisfaction >= 80 then 'Emergency High'
+                        --         when service='general_medicine' and patient_satisfaction < 80 then 'general_medicine Low'
+                        --         when service='general_medicine' and patient_satisfaction >= 50 then 'general_medicine Medium'
+                        --         when service='general_medicine' and patient_satisfaction >= 80 then 'general_medicine High'
+                        --         when service='ICU' and patient_satisfaction < 80 then 'ICU Low'
+                        --         when service='ICU' and patient_satisfaction >= 50 then 'ICU Medium'
+                        --         when service='ICU' and patient_satisfaction >= 80 then 'ICU High'
+                        --         when service='surgery' and patient_satisfaction < 80 then 'surgery Low'
+                        --         when service='surgery' and patient_satisfaction >= 50 then 'surgery Medium'
+                        --         when service='surgery' and patient_satisfaction >= 80 then 'surgery High'
+
+                        -- end as service_based_patient_satisfaction
+
+                        -- from weekly_services;
 
 
 -- Decision-Oriented Questions

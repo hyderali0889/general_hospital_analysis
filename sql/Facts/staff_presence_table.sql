@@ -1,4 +1,4 @@
--- CREATE TABLE Staff_presence( 
+-- CREATE TABLE Staff_presence(
 --     staff_presence_id BIGSERIAL PRIMARY KEY,
 --     staff_name VARCHAR(50),
 --     present NUMERIC(5),

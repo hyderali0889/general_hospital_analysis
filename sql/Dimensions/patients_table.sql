@@ -1,4 +1,4 @@
--- Create Table patients ( 
+-- Create Table patients (
 --     patient_id text not null primary key,
 --     name text,
 --     age numeric(5),

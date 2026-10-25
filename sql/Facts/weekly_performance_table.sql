@@ -1,4 +1,4 @@
--- CREATE TABLE weekly_performance( 
+-- CREATE TABLE weekly_performance(
 -- id BIGSERIAL PRIMARY KEY,
 --  week Numeric(2),
 --  available_beds Numeric(5),
