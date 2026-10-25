@@ -59,16 +59,14 @@ Using both SQL and Python. Created publication-quality visualizations.      Visu
 ### Day 8–9: Advanced Analysis & Modeling
 Make the project stand out:
 
-- Time series analysis of admissions and utilization
-- Correlation / regression: What drives patient satisfaction and staff morale?
-- Simple predictive model (e.g. predict high refusal risk weeks or staffing needs)
+- Time series analysis of admissions and utilization    Done
+- Correlation / regression: What drives patient satisfaction and staff morale?      Done Buisness question no 27
 - Optional: Clustering of services or staff performance
-- Scenario analysis (“What if we increase beds in ICU by 10%?”)
-- Answer Business Questions (part 5 & 6) 
+- Scenario analysis (“What if we increase beds in ICU by 10%?”)           Done Buisness question no 28
+- Answer Business Questions (part 5 & 6)      Done
 
 
 ### Day 10–11: Professional Dashboards (Most Important for Portfolio)
-Build **two dashboards**:
 
 1. **Power BI Dashboard** (primary)  
    - Executive overview (KPIs)
@@ -83,12 +81,12 @@ Make the dashboards clean, interactive, and decision-oriented.
 
 **Deliverables**:
 - Power BI .pbix file + published link (if possible)
-- Metabase dashboard screenshots or live link
-- High-quality static visualizations for the report
+- Metabase dashboard screenshots or live link         Done in the website
+- High-quality static visualizations for the report   Done in the report
 
 ### Day 12: Real-World Tools
 - Simulate real-time data flow with **Kafka** (produce admission events and consume them into a dashboard)
-- build a simple **Streamlit** app for interactive exploration
+- build a simple app for interactive exploration
 - Containerize the project with Docker      Done
 
 Even basic implementation of one of these is impressive.

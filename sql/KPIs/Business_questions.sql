@@ -221,47 +221,62 @@
 
     -- 5. Workforce coverage and morale
 
-        -- 28. What is the staff attendance rate by week, service, role, and individual?
+        -- 27. What drives patient satisfaction and staff morale?
+
+                -- select * from weekly_services order by patient_satisfaction desc;
+
+                --   select * from weekly_services order by staff_morale;
 
 
-        -- 29. Which services and roles have the largest staffing gaps or the most variable coverage?
+                -- not a lot of connections between patient satisfaction and staff morale and other factors so nothing drives patient satisfaction and staff moral
+
+        -- 28. What if we increase beds in ICU by 10%?
+
+                -- select (available_beds * 1.1) as increased_beds , patients_request , (patients_admitted * 1.1) as patients_admitted,
+                -- Round(( (available_beds * 1.1) - patients_request  ) / patients_admitted , 2) as patients_without_beds,
+                -- service from weekly_services where service='ICU' order by patients_without_beds desc;
+
+                -- if we increase the beds in ICU by 10% the patients refusal rates will reduce to almost 0%
 
 
-        -- 30. Is lower staff presence associated with lower patient satisfaction, lower morale, or higher refusal rates?
+
+                -- select s.staff_id , t.staff_name,s.week,t.role,t.service from staff_schedule s join staff t on s.staff_id = t.staff_id;
+
+                
+
+        -- 29. Which weeks show simultaneous high demand and low staff morale?
+                -- select * from weekly_services;
+                -- select week ,patients_request from weekly_services order by patients_request desc ;
+
+                -- select week ,staff_morale from weekly_services order by staff_morale ;
 
 
-        -- 31. Does the relationship between staffing and outcomes differ between doctors, nurses, and nursing assistants?
 
+        -- 30. Does staff morale fall during high-demand or event weeks, and how quickly does it recover afterward?
 
-        -- 32. Which weeks show simultaneous high demand, low attendance, and low staff morale?
+                -- select week , patients_request,staff_morale from weekly_services order by patients_request desc;
 
-
-        -- 33. What minimum staffing level appears necessary to support demand without a deterioration in satisfaction or refusals?
-
-
-        -- 34. Are particular services dependent on a small number of staff members, creating operational risk when they are absent?
-
-
-        -- 35. Does staff morale fall during high-demand or event weeks, and how quickly does it recover afterward?
-
-
+                -- staff morale doesn't fall during high demand
 
     -- 6. Events and operational resilience
 
-        -- 36. How do flu weeks affect demand, admissions, refusals, satisfaction, morale, and staffing attendance?
+        -- 31. How do flu weeks affect demand, admissions, refusals, satisfaction, morale, and staffing attendance?
+
+                -- select week,patients_request,patients_admitted, patients_refused,
+                -- Round((patients_refused * 100) / patients_request,2) as refusal_rate,
+                -- patient_satisfaction,staff_morale from weekly_services where event='flu' order by week desc;
+
+                -- Staff morale and patient satfisfactions are high even during flu weeks , The refusal rates are very high during the flu season dur to un available beds which is a point of concern
+
+        -- 32. Which services are most sensitive to each event type?
 
 
-        -- 37. Do strike weeks show evidence of reduced attendance, increased refusals, or lower satisfaction?
+        -- 33. What staffing and bed-capacity plan would best protect the hospital during future high-impact events?
+                -- select (available_beds * 1.1) as increased_beds , patients_request , (patients_admitted * 1.1) as patients_admitted,
+                -- Round(( (available_beds * 1.1) - patients_request  ) / patients_admitted , 2) as patients_without_beds,
+                -- service from weekly_services order by patients_without_beds desc;
 
-
-        -- 38. Do donation weeks produce measurable changes in capacity, demand, staffing, or patient outcomes?
-
-
-        -- 39. Which services are most sensitive to each event type?
-
-
-        -- 40. What staffing and bed-capacity plan would best protect the hospital during future high-impact events?
-
+                -- Increasing the beds by 10 % will reduce the patients refusal rates to almost 0% and will protect the hospital during future high-impact events
 
 
 -- Decision-Oriented Questions
