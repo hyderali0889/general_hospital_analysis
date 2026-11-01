@@ -236,7 +236,7 @@
                 -- Round(( (available_beds * 1.1) - patients_request  ) / patients_admitted , 2) as patients_without_beds,
                 -- service from weekly_services where service='ICU' order by patients_without_beds desc;
 
-                -- if we increase the beds in ICU by 10% the patients refusal rates will reduce to almost 0%
+                -- A fixed-demand 10% bed increase models a 19.1% reduction in ICU refusals (141 to 114), not nearly zero; see the scenario query below.
 
 
 
@@ -276,32 +276,172 @@
                 -- Round(( (available_beds * 1.1) - patients_request  ) / patients_admitted , 2) as patients_without_beds,
                 -- service from weekly_services order by patients_without_beds desc;
 
-                -- Increasing the beds by 10 % will reduce the patients refusal rates to almost 0% and will protect the hospital during future high-impact events
+                -- A fixed-demand 10% bed increase does not nearly eliminate refusals; see the service-level scenario query below and size event capacity from the observed demand gap.
 
 
 -- Decision-Oriented Questions
 
     -- These questions convert the analysis into recommendations for management:
 
-        -- 1. Where should the hospital add beds first?
+        -- 1. Service priority, total refusal rate, satisfaction, and persistent high-refusal weeks
+        WITH weekly_metrics AS (
+        SELECT
+        week,
+        service,
+        patients_request,
+        patients_refused,
+        available_beds,
+        patient_satisfaction,
+        staff_morale,
+        100.0 * patients_refused / NULLIF(patients_request, 0) AS refusal_rate
+        FROM weekly_services
+        ), previous_week AS (
+        SELECT
+        *,
+        LAG(week) OVER (PARTITION BY service ORDER BY week) AS prior_week,
+        LAG(refusal_rate) OVER (PARTITION BY service ORDER BY week) AS prior_refusal_rate
+        FROM weekly_metrics
+        )
+        SELECT
+        service,
+        COUNT(*) AS weeks_observed,
+        SUM(patients_request) AS total_requests,
+        SUM(patients_refused) AS total_refusals,
+        ROUND(100.0 * SUM(patients_refused) / NULLIF(SUM(patients_request), 0), 1) AS overall_refusal_pct,
+        COUNT(*) FILTER (WHERE refusal_rate >= 65) AS weeks_at_or_above_65_pct,
+        COUNT(*) FILTER (
+        WHERE refusal_rate >= 65
+                AND prior_refusal_rate >= 65
+                AND week = prior_week + 1
+        ) AS weeks_in_consecutive_65_pct_streaks,
+        ROUND(AVG(patient_satisfaction), 1) AS avg_patient_satisfaction,
+        ROUND(AVG(staff_morale), 1) AS avg_staff_morale
+        FROM previous_week
+        GROUP BY service
+        ORDER BY total_refusals DESC;
 
+        -- 2. Weekly operating triggers: demand versus beds, refusal rate, attendance, and morale
+        WITH staffing AS (
+        SELECT
+        ss.week,
+        s.service,
+        COUNT(*) AS scheduled_staff,
+        COUNT(*) FILTER (WHERE ss.present = 1) AS present_staff
+        FROM staff_schedule AS ss
+        JOIN staff AS s ON s.staff_id = ss.staff_id
+        GROUP BY ss.week, s.service
+        )
+        SELECT
+        ws.week,
+        ws.service,
+        COALESCE(NULLIF(NULLIF(LOWER(TRIM(ws.event)), ''), 'none'), 'no event') AS event,
+        ws.patients_request,
+        ws.available_beds,
+        GREATEST(ws.patients_request - ws.available_beds, 0) AS request_bed_gap,
+        ws.patients_refused,
+        ROUND(100.0 * ws.patients_refused / NULLIF(ws.patients_request, 0), 1) AS refusal_pct,
+        staffing.scheduled_staff,
+        staffing.present_staff,
+        ROUND(100.0 * staffing.present_staff / NULLIF(staffing.scheduled_staff, 0), 1) AS attendance_pct,
+        ws.staff_morale,
+        (ws.patients_request > ws.available_beds) AS demand_exceeds_beds,
+        (100.0 * ws.patients_refused / NULLIF(ws.patients_request, 0) >= 65) AS refusal_trigger,
+        (100.0 * staffing.present_staff / NULLIF(staffing.scheduled_staff, 0) < 50) AS low_attendance_trigger,
+        (ws.staff_morale < 60) AS low_morale_trigger
+        FROM weekly_services AS ws
+        LEFT JOIN staffing
+        ON staffing.week = ws.week
+        AND staffing.service = ws.service
+        ORDER BY ws.week, ws.service;
 
-        -- 2. When should temporary staff or overtime be scheduled?
+        -- 3. Event impact by service, with request-weighted refusal and attendance rates
+        WITH staffing AS (
+        SELECT
+        ss.week,
+        s.service,
+        COUNT(*) AS scheduled_staff,
+        COUNT(*) FILTER (WHERE ss.present = 1) AS present_staff
+        FROM staff_schedule AS ss
+        JOIN staff AS s ON s.staff_id = ss.staff_id
+        GROUP BY ss.week, s.service
+        )
+        SELECT
+        COALESCE(NULLIF(NULLIF(LOWER(TRIM(ws.event)), ''), 'none'), 'no event') AS event,
+        ws.service,
+        COUNT(*) AS service_weeks,
+        SUM(ws.patients_request) AS total_requests,
+        SUM(ws.patients_refused) AS total_refusals,
+        ROUND(100.0 * SUM(ws.patients_refused) / NULLIF(SUM(ws.patients_request), 0), 1) AS refusal_pct,
+        ROUND(100.0 * SUM(staffing.present_staff) / NULLIF(SUM(staffing.scheduled_staff), 0), 1) AS attendance_pct,
+        ROUND(AVG(ws.patient_satisfaction), 1) AS avg_patient_satisfaction,
+        ROUND(AVG(ws.staff_morale), 1) AS avg_staff_morale
+        FROM weekly_services AS ws
+        LEFT JOIN staffing
+        ON staffing.week = ws.week
+        AND staffing.service = ws.service
+        GROUP BY 1, 2
+        ORDER BY event, ws.service;
 
+        -- 4. Fixed-demand scenario: add 10% of beds per week and estimate attendance gains to an 80% target
+        WITH bed_scenario AS (
+        SELECT
+        service,
+        patients_refused,
+        FLOOR(available_beds * 0.10) AS added_beds_this_week
+        FROM weekly_services
+        ), bed_totals AS (
+        SELECT
+        service,
+        SUM(patients_refused) AS baseline_refusals,
+        SUM(added_beds_this_week) AS added_bed_weeks,
+        SUM(GREATEST(patients_refused - added_beds_this_week, 0)) AS modeled_refusals_after_addition
+        FROM bed_scenario
+        GROUP BY service
+        ), attendance AS (
+        SELECT
+        s.service,
+        COUNT(*) AS scheduled_shifts,
+        COUNT(*) FILTER (WHERE ss.present = 1) AS attended_shifts
+        FROM staff_schedule AS ss
+        JOIN staff AS s ON s.staff_id = ss.staff_id
+        GROUP BY s.service
+        )
+        SELECT
+        bed_totals.service,
+        bed_totals.baseline_refusals,
+        bed_totals.added_bed_weeks,
+        bed_totals.modeled_refusals_after_addition,
+        ROUND(
+        100.0 * (bed_totals.baseline_refusals - bed_totals.modeled_refusals_after_addition)
+        / NULLIF(bed_totals.baseline_refusals, 0),
+        1
+        ) AS modeled_refusal_reduction_pct,
+        ROUND(100.0 * attendance.attended_shifts / NULLIF(attendance.scheduled_shifts, 0), 1) AS current_attendance_pct,
+        ROUND(
+        GREATEST(
+                0,
+                (0.80 - attendance.attended_shifts::numeric / NULLIF(attendance.scheduled_shifts, 0)) * 100
+        ),
+        1
+        ) AS additional_filled_shifts_per_100_to_reach_80_pct
+        FROM bed_totals
+        JOIN attendance USING (service)
+        ORDER BY bed_totals.baseline_refusals DESC;
 
-        -- 3. Which service needs a permanent staffing adjustment rather than short-term intervention?
-
-
-        -- 4. What refusal-rate, attendance, or morale threshold should activate an operational response?
-
-
-        -- 5. Which actions are likely to improve patient satisfaction without reducing access?
-
-
-        -- 6. How should the hospital prepare for a repeat flu season or strike?
-
-
-        -- 7. What are the expected benefits of adding beds, improving attendance, or reducing length of stay?
+        -- 5. Length of stay by service and a one-day-reduction bed-day scenario
+        SELECT
+        service,
+        COUNT(*) AS eligible_patient_records,
+        ROUND(AVG((departure_date - arrival_date)::numeric), 2) AS avg_length_of_stay_days,
+        PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY departure_date - arrival_date) AS median_length_of_stay_days,
+        MAX(departure_date - arrival_date) AS max_length_of_stay_days,
+        COUNT(*) AS theoretical_bed_days_freed_if_each_stay_fell_by_one_day
+        FROM patients
+        WHERE arrival_date IS NOT NULL
+        AND departure_date IS NOT NULL
+        AND departure_date > arrival_date
+        GROUP BY service
+        ORDER BY avg_length_of_stay_days DESC;
 
 
 

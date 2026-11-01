@@ -1,3 +1,5 @@
 data/
 reports/fiverr
 .aider*
+__pycache__/
+*.py[cod]

@@ -118,7 +118,23 @@ Run the SQL scripts in the `sql/` folder to create staging tables and the analyt
 ### 4. Explore the analysis
 Open the notebooks in the `notebooks/` folder.
 
-### 5. View Dashboards
+### 5. Run the interactive explorer
+```bash
+python -m pip install -r project_apps/requirements.txt
+python -m streamlit run project_apps/streamlit_app.py
+```
+Use the sidebar to filter services, events, and weeks; the tabs cover overview, capacity, and workforce/flow. The app reads the CSVs in `data/` directly.
+
+### 6. Simulate Kafka admission events
+Start Kafka from the project Compose file, then install the Kafka client and run the producer/consumer demo:
+```bash
+docker compose -f project_apps/compose.yml up -d kafka
+python -m pip install -r Python/requirements-kafka.txt
+python Python/kafka_flow_simulator.py --mode demo --events 10 --interval 0.5
+```
+The demo replays synthetic patient IDs and services from `data/patients.csv`. For separate processes, use `--mode consume` in one terminal and `--mode produce --events 10` in another.
+
+### 7. View Dashboards
 - Open the Power BI `.pbix` file
 
 ---

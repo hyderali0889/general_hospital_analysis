@@ -69,39 +69,36 @@ Make the project stand out:
 ### Day 10–11: Professional Dashboards (Most Important for Portfolio)
 
 1. **Power BI Dashboard** (primary)  
-   - Executive overview (KPIs)
-   - Bed utilization & refusal deep-dive
-   - Staffing vs demand
-   - Patient satisfaction & morale
-   - Filters by service, week, event
-   - Answer Business Questions (Decision-Oriented Questions) 
+   - Executive overview (KPIs)                  Done
+   - Bed utilization & refusal deep-dive        Done
+   - Patient satisfaction & morale              Done
+   - Filters by service, week, event            Done
+   - Answer Business Questions (Decision-Oriented Questions)   Done
   
 
 Make the dashboards clean, interactive, and decision-oriented.
 
 **Deliverables**:
-- Power BI .pbix file + published link (if possible)
+- Power BI .pbix file + published link (if possible)  Done in the report
 - Metabase dashboard screenshots or live link         Done in the website
 - High-quality static visualizations for the report   Done in the report
 
 ### Day 12: Real-World Tools
-- Simulate real-time data flow with **Kafka** (produce admission events and consume them into a dashboard)
-- build a simple app for interactive exploration
+- Simulate real-time data flow with **Kafka**    Done
+- build a simple app for interactive exploration    Done
 - Containerize the project with Docker      Done
 
-Even basic implementation of one of these is impressive.
 
 ### Day 13: Storytelling & Final Report
 Create a professional portfolio package:
 
-1. **Executive Summary** (1 page) – Key insights + recommendations
-2. **Full Analysis Report** (PDF or Notion)
+1. **Executive Summary** (1 page) – Key insights + recommendations    [Done](reports/executive_summary.md)
+2. **Full Analysis Report** (PDF or Notion)    [Done](reports/full_analysis_report.md)
 3. **GitHub Repository** with:
    - Clean code
    - SQL scripts
    - Dashboard files
-   - Clear README (problem → approach → insights → recommendations)
-4. **LinkedIn/Portfolio post** version (short story + screenshots)
+   - Clear README (problem → approach → insights → recommendations)       Done
 
 #### Recommendations to include:
 - Optimal staffing levels by service
@@ -110,20 +107,18 @@ Create a professional portfolio package:
 - Ways to improve staff morale and patient satisfaction
 
 ### Day 14: Polish, Review & Publish
-- End-to-end testing of all code
-- Peer review / self-critique
-- Record a 5–7 minute video walkthrough
-- Publish everything on GitHub + LinkedIn + personal portfolio site
+- End-to-end testing of all code            Done
+- Peer review / self-critique               Done
+- Publish everything on GitHub             Done
 
 ---
 
 ### Final Deliverables Checklist
-- Clean multi-table PostgreSQL data model
-- Power BI interactive dashboard (main visual asset)
-- Professional PDF report with strong recommendations
-- Well-documented GitHub repository
-- Kafka simulation and Streamlit app
-- Video presentation
+- Clean multi-table PostgreSQL data model           Done 
+- Power BI interactive dashboard (main visual asset)          Done
+- Professional PDF report with strong recommendations         Done  
+- Well-documented GitHub repository                 Done
+- Kafka simulation and Streamlit app                Done
 
 ### This project combines:
 - Multi-table healthcare operations data
